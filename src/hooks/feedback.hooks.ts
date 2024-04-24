@@ -9,7 +9,6 @@ export const useFetchFeedback = ()=>{
         queryFn: ()=> feedbackService.getFeedbacks()
     })
 }
-
 export const useFetchFeedbackById = (eventId:string)=>{
     return useQuery({
         queryKey:["feedback", eventId],
