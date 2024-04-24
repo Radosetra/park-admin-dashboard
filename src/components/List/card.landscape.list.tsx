@@ -30,7 +30,6 @@ export const ListCardLandscape = () => {
   });
 
   const [isViewOpen, setIsViewOpen] = useState(false);
-
   const [isCreateFormOpen, setIsCreateFormOpen] = useState(false);
 
   return (
