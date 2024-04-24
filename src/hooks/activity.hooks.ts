@@ -13,7 +13,7 @@ export const useFetchActivity = ()=>{
 export const useCreateActivity = ()=>{
     return useMutation({
         mutationKey:["createActivity"],
-        mutationFn:(activity:CreateActivityDto)=>activityService.createActivity(activity),
+        mutationFn:(activity:FormData)=>activityService.createActivity(activity),
         onSuccess: async ()=>{
             await queryClient.invalidateQueries("activity")
             await queryClient.resetQueries("activity")

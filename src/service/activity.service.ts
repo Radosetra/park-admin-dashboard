@@ -6,8 +6,8 @@ class ActivityService {
     public getActivity(){
         return HttpClient.get(ENDPOINT.ACTIVITY)
     }
-    public createActivity (activity:CreateActivityDto) {
-        return HttpClient.post(`${ENDPOINT.ACTIVITY}/create`,activity)
+    public createActivity (activity:FormData) {
+        return HttpClient.post(`${ENDPOINT.ACTIVITY}create`,activity)
     }
     public editActivity (activity:Partial<CreateActivityDto>, activity_id:string) {
         return HttpClient.post(`${ENDPOINT.ACTIVITY}/edit/${activity_id}`,activity)
