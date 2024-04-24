@@ -1,5 +1,4 @@
-import { useRef, useState } from "react";
-import { FilePreview } from '../view/media.preview';
+import { ChangeEvent, useRef } from 'react';
 import { Button, IconButton } from "../../../button";
 import FileSlider from "../view/media.slider";
 
@@ -13,20 +12,14 @@ type FileInputProps = {
     icon?: React.ReactNode
     variant?: "primary" | "secondary"|"icon"
     children?:React.ReactNode
+    files:File[]
+    handleFileChange:(e:ChangeEvent<HTMLInputElement>)=>void
+    removeFile:(index:number)=>void
 }
 export const FileInput = (props: FileInputProps) => {
-    const { previewed, style, multiple=false, children, size = "medium", label, icon, variant = "secondary"} = props
+    const { previewed, style, multiple=false, children, size = "medium", label, icon, variant = "secondary", handleFileChange, files, removeFile} = props
     const fileInputRef = useRef<HTMLInputElement>(null);
-    const [files, setFiles] = useState<File[]>([]);
-    
-    const handleFileChange = (e:React.ChangeEvent<HTMLInputElement>)=>{
-        if (e.target.files){
-            setFiles([...files,...Array.from(e.target.files)])
-        }
-    }
-    const removeFile = (index:number)=>{
-        setFiles(files.filter((_,i)=> i !== index))
-    }
+
     const handleClick = () => {
         fileInputRef.current?.click()
     }
@@ -53,7 +46,7 @@ export const FileInput = (props: FileInputProps) => {
             />
             <div className="flex flex-row w-full">
 
-                {  
+                {
                     label?
                     <Button size={size} label={label} style={`w-full ${style}`} type="button" variant={variant} onClick={handleClick} leftIcon={icon} />:
                     <IconButton icon={icon} onClick={handleClick} variant={variant} size={size} style={style}/>
@@ -61,12 +54,7 @@ export const FileInput = (props: FileInputProps) => {
                 {children}
             </div>
             {
-                (previewed && files) && <div className={`${previewed==="after"?"mt-4":"mb-4"}`}>
-                    {/* {
-                        files!.map((file, index) => (
-                            <FilePreview file={file} index={index} removeFile={() => removeFile(index)} key={index} />
-                        ))
-                    } */}
+              (previewed ) && <div className={`w-full grid gap-1 ${previewed==="after"?"mt-4":"mb-4"} ${gridClass()}`}>
                     <FileSlider files={files} removeFile={removeFile}/>
                 </div>
 
