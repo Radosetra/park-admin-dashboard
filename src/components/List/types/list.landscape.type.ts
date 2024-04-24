@@ -1,5 +1,5 @@
-import { LandscapeType } from "../../../types/landscapeType";
+import { LandscapeDto } from '../../../_type/landscape.dto.ts';
 
 export type ListCardLandscapeProps = {
-    landscapes: LandscapeType[];
+    landscapes: LandscapeDto[];
 }

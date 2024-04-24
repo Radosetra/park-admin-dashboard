@@ -1,11 +1,12 @@
-import React, { useState } from "react";
+import { useState } from "react";
 
 import LeftArrow from "../images/svg/arrow-left.svg";
 import RightArrow from "../images/svg/arrow-right.svg";
+import { PhotoDto } from '../_type/photo.dto.ts';
 
 interface ImageSliderProps {
     height: string
-    images: string[]
+    images: PhotoDto[]
 }
 
 const ImageSlider = ({ height, images }:ImageSliderProps) => {
@@ -29,8 +30,8 @@ const ImageSlider = ({ height, images }:ImageSliderProps) => {
         className={`flex transition-transform duration-500 ease-in-out ${height}`}
         style={{ transform: `translateX(-${currentImageIndex * 100}%)` }}
       >
-        {images.map((imageUrl, index) => (
-          <img key={index} src={imageUrl} alt={`carousel-${index}`} className="w-full h-full shrink-0 object-cover rounded-lg" />
+        {images.map((image, index) => (
+          <img key={index} src={image.picture_url} alt={`carousel-${index}`} className="w-full h-full shrink-0 object-cover rounded-lg" />
         ))}
       </div>
       <button

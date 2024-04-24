@@ -1,6 +1,6 @@
-import {HttpClient} from "@/lib/http.client";
-import {ENDPOINT} from "@/_constant/endpoint";
-import {CreateLandscapeDto} from "@/_type/landscape.dto";
+import { HttpClient } from '../lib/http.client.ts';
+import { CreateLandscapeDto } from '../_type/landscape.dto.ts';
+import { ENDPOINT } from '../_constant/endpoint.ts';
 
 class LandscapeService{
     public getLandscapes(){

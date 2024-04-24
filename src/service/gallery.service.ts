@@ -1,5 +1,5 @@
-import {HttpClient} from "@/lib/http.client";
-import {ENDPOINT} from "@/_constant/endpoint";
+import { HttpClient } from '../lib/http.client.ts';
+import { ENDPOINT } from '../_constant/endpoint.ts';
 
 class GalleryService {
     public getPhotos(){
