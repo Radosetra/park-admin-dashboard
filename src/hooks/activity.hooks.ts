@@ -1,7 +1,7 @@
 import {useMutation, useQuery} from "react-query";
-import {activityService} from "@/service/activity.service";
-import {CreateActivityDto} from "@/_type/activity.dto";
-import {queryClient} from "@/lib/queryClient";
+import { activityService } from '../service/activity.service.ts';
+import { CreateActivityDto } from '../_type/activity.dto.ts';
+import { queryClient } from '../lib/queryClient.ts';
 
 export const useFetchActivity = ()=>{
     return useQuery({

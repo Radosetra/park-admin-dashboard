@@ -1,8 +1,9 @@
 import {useMutation, useQuery} from "react-query";
-import {eventService} from "@/service/event.service";
-import {ClientDto} from "@/_type/client.dto";
-import {CreateEventDto} from "@/_type/event.dto";
-import {queryClient} from "@/lib/queryClient";
+
+import { eventService } from '../service/event.service.ts';
+import { ClientDto } from '../_type/client.dto.ts';
+import { CreateEventDto } from '../_type/event.dto.ts';
+import { queryClient } from '../lib/queryClient.ts';
 
 export const useFetchEvents = ()=>{
     return useQuery({
