@@ -9,8 +9,13 @@ export const CardHeader = (props:CardHeaderProps) => {
     }, [])
     return (
         <div className={`flex ${style}`}>
-            
-            <img src={imageUrl} className="object-cover w-full h-full shrink-0" alt="card image" />
+          {
+            imageUrl?
+            <img src={imageUrl} className="object-cover w-full h-full shrink-0" alt="card image" />:
+              <div className={"w-full h-full bg-graydark/30"}>
+
+              </div>
+          }
         </div>
   )
 }

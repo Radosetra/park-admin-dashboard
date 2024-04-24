@@ -1,32 +1,36 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { truncateString } from '../../utils/stringUtils';
-import { Button } from '../button/button';
-import { Card } from '../card/card';
-import { CardActions } from '../card/components/card.actions';
-import { CardBody } from '../card/components/card.body';
-import { CardBodyTitle } from '../card/components/card.body.title';
-import { CardHeader } from '../card/components/card.header';
+import { Button } from '../button';
+import { Card } from '../card';
+import { CardActions } from '../card/components';
+import { CardBody } from '../card/components';
+import { CardBodyTitle } from '../card/components';
+import { CardHeader } from '../card/components';
 import { ListCardSpecieProps } from './types/list.specie.type';
-import { Specie } from '../../types/specie';
 import { FaPlus } from 'react-icons/fa';
 import ModalItemView from '../Modal/ModalItemView';
 import ModalCreateItem from '../Modal/ModalCreateItem';
+import { SpeciesDto, SpecieType } from '../../_type/species.dto.ts';
+import { useFetchSpeciesByType } from '../../hooks/species.hooks.ts';
+import { Specie } from '../../types/specie.ts';
 
 export const ListCardSpecie = ({
-  species,
+  type
 }: ListCardSpecieProps) => {
 
   const [currentSpecie, setCurrentSpecie] = useState<Specie>({
     specie_name: "",
     specie_description: "",
-    specie_type: "animal",
+    specie_type: SpecieType.ANIMAL,
     photos: []
   });
-
   const [isOpen, setIsOpen] = useState(false);
-
   const [isCreateFormOpen, setIsCreateFormOpen] = useState(false);
-
+  const [species, setSpecies] = useState<SpeciesDto[]>()
+  const {data, isSuccess} = useFetchSpeciesByType(type)
+  useEffect(() => {
+    setSpecies(data?.data)
+  }, [data, isSuccess]);
   return (
     <div className="flex flex-col">
       <div className="flex justify-end mb-5">
@@ -40,8 +44,8 @@ export const ListCardSpecie = ({
       </div>
       <div className="flex flex-col">
         <div className="flex flex-wrap gap-5">
-          {species.map((specie, key) => {
-            const image: string = specie.photos[0];
+          {species?.map((specie, key) => {
+            const image: string = specie.pictures?specie.pictures[0]?.picture_url:"";
             return (
               <Card
                 shadow="lg"
@@ -64,7 +68,7 @@ export const ListCardSpecie = ({
                     <Button
                       label="View"
                       onClick={() => {
-                        setCurrentSpecie(specie);
+                        setCurrentSpecie(specie as Specie);
                         setIsOpen(true);
                       }}
                       type="button"

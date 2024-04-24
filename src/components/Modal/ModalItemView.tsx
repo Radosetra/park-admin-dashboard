@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { ChangeEvent, useState } from 'react';
 import ImageSlider from '../ImageSlider';
 import { DynamicInput, FileInput } from '../input';
 import { FaImage } from 'react-icons/fa';
@@ -8,19 +8,25 @@ import {
   isSpecieChecker,
 } from '../../utils/typeUtils';
 import ModalBase from './ModalBase';
-import { LandscapeDto } from '../../_type/landscape.dto.ts';
-import { ActivityDto } from '../../_type/activity.dto.ts';
-import { SpeciesDto } from '../../_type/species.dto.ts';
+import { Specie } from '../../types/specie.ts';
+import { ActivityType } from '../../types/activityType.ts';
+import { LandscapeType } from '../../types/landscapeType.ts';
 
 interface ModalItemViewProps {
-  item: SpeciesDto | ActivityDto | LandscapeDto;
+  item: Specie | ActivityType | LandscapeType;
   setIsOpen: (value: boolean) => void;
 }
 
 export default function ModalItemView({ item, setIsOpen }: ModalItemViewProps) {
   const [isEditing, setIsEditing] = useState(false);
-
-  const itemName = (item: SpeciesDto | ActivityDto | LandscapeDto): string => {
+  const [files, setFiles ] = useState<File[]>([])
+  const handleFileChange = (e:ChangeEvent<HTMLInputElement>)=>{
+    setFiles([...files,...Array.from(e.target.files!)])
+  }
+  const removeFile = (index:number)=>{
+    setFiles(files.filter((_,i)=> i !== index))
+  }
+  const itemName = (item: Specie | ActivityType | LandscapeType): string => {
     let itemName = '';
     if (isSpecieChecker(item)) {
       itemName = item.specie_name;
@@ -34,7 +40,7 @@ export default function ModalItemView({ item, setIsOpen }: ModalItemViewProps) {
   };
 
   const itemDescription = (
-    item: SpeciesDto | ActivityDto | LandscapeDto,
+    item: Specie | ActivityType | LandscapeType,
   ): string => {
     let itemDescri = '';
     if (isSpecieChecker(item)) {
@@ -58,17 +64,20 @@ export default function ModalItemView({ item, setIsOpen }: ModalItemViewProps) {
         {/*body*/}
 
         {/* Image slider */}
-        {item.pictures?.length !== 0 && (
+        {item.photos?.length !== 0 && (
           <div className="flex-auto">
             {isEditing ? (
               <FileInput
+                handleFileChange={handleFileChange}
+                files={files}
+                removeFile={removeFile}
                 previewed="after"
                 label="Input file"
                 icon={<FaImage />}
                 style="border-dashed h-[4.5rem]"
               />
             ) : (
-              <ImageSlider height="h-[17rem]" images={item.pictures!} />
+              <ImageSlider height="h-[17rem]" images={item.photos} />
             )}
           </div>
         )}

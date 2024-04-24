@@ -1,5 +1,4 @@
-import { useState } from 'react';
-import { ActivityType } from '../../types/activityType';
+import { useEffect, useState } from 'react';
 import { truncateString } from '../../utils/stringUtils';
 import { Button } from '../button/button';
 import { Card } from '../card/card';
@@ -7,19 +6,24 @@ import { CardActions } from '../card/components/card.actions';
 import { CardBody } from '../card/components/card.body';
 import { CardBodyTitle } from '../card/components/card.body.title';
 import { CardHeader } from '../card/components/card.header';
-import { ListCardActivityProps } from './types/list.activity.type';
 import ModalItemView from '../Modal/ModalItemView';
 import ModalCreateItem from '../Modal/ModalCreateItem';
 import { FaPlus } from 'react-icons/fa';
+import { ActivityDto } from '../../_type/activity.dto.ts';
+import { useFetchActivity } from '../../hooks/activity.hooks.ts';
 
-export const ListCardActivity = (props: ListCardActivityProps) => {
-  const { activities } = props;
-
-  const [currentActivity, setCurrentActivity] = useState<ActivityType>({
+export const ListCardActivity = () => {
+  const [activities, setActivities] = useState<ActivityDto[]>()
+  const {data, isSuccess} = useFetchActivity()
+  const [currentActivity, setCurrentActivity] = useState<ActivityDto>({
     activity_name: '',
     activity_description: '',
-    photos: [],
+    pictures: [],
   });
+  if (isSuccess) console.log(data)
+  useEffect(() => {
+    setActivities(data?.data)
+  }, [data, isSuccess]);
 
   const [isViewOpen, setIsViewOpen] = useState(false);
 
@@ -41,8 +45,8 @@ export const ListCardActivity = (props: ListCardActivityProps) => {
 
       <div className="flex flex-col">
         <div className="flex flex-wrap gap-5 justify-between">
-          {activities.map((activity, key) => {
-            const image: string = activity.photos[0];
+          {activities?.map((activity, key) => {
+            const image: string = activity.pictures?activity.pictures[0]?.picture_url:"";
             return (
               <Card
                 shadow="lg"

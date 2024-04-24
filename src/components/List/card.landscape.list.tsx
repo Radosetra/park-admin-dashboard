@@ -48,7 +48,7 @@ export const ListCardLandscape = () => {
       <div className="flex flex-col">
         <div className="flex flex-wrap gap-5 justify-between">
           {landscapes?.map((landscape, key) => {
-            const image: string = landscape.pictures?landscape.pictures[0].picture_url:"";
+            const image: string = landscape.pictures?landscape.pictures[0]?.picture_url:"";
             return (
               <Card
                 shadow="lg"
