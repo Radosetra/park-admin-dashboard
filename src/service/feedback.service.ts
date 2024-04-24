@@ -1,6 +1,6 @@
-import {HttpClient} from "@/lib/http.client";
-import {ENDPOINT} from "@/_constant/endpoint";
-import {FeedbackCreateDto, FeedbackDto} from "@/_type/feedback.dto";
+import { HttpClient } from '../lib/http.client.ts';
+import { FeedbackDto } from '../_type/feedback.dto.ts';
+import { ENDPOINT } from '../_constant/endpoint.ts';
 
 class FeedbackService {
     public getFeedbacks() {

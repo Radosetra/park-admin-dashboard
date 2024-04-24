@@ -1,6 +1,6 @@
-import {HttpClient} from "@/lib/http.client";
-import {ENDPOINT} from "@/_constant/endpoint";
-import {CreateSpeciesDto} from "@/_type/species.dto";
+import { HttpClient } from '../lib/http.client.ts';
+import { CreateSpeciesDto } from '../_type/species.dto.ts';
+import { ENDPOINT } from '../_constant/endpoint.ts';
 
 class SpeciesService {
     public getSpecies(){

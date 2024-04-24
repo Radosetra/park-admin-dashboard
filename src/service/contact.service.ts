@@ -1,6 +1,6 @@
-import {ContactDto, ContactList, ContactResponseDto} from "@/_type/contact.dto";
-import {HttpClient} from "@/lib/http.client";
-import {ENDPOINT} from "@/_constant/endpoint";
+import { ContactDto, ContactList, ContactResponseDto } from '../_type/contact.dto.ts';
+import { HttpClient } from '../lib/http.client.ts';
+import { ENDPOINT } from '../_constant/endpoint.ts';
 
 class ContactService {
     public submitContact(contact: ContactDto){

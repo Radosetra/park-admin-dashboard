@@ -1,4 +1,4 @@
-import {PhotoDto} from "@/_type/photo.dto";
+import { PhotoDto } from './photo.dto.ts';
 
 export interface FeedbackCreateDto{
     feedback_content:string

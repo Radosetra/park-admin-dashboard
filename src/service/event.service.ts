@@ -1,7 +1,7 @@
-import {HttpClient} from "@/lib/http.client";
-import {ENDPOINT} from "@/_constant/endpoint";
-import {ClientDto} from "@/_type/client.dto";
-import {CreateEventDto} from "@/_type/event.dto";
+import { HttpClient } from '../lib/http.client.ts';
+import { ClientDto } from '../_type/client.dto.ts';
+import { CreateEventDto } from '../_type/event.dto.ts';
+import { ENDPOINT } from '../_constant/endpoint.ts';
 
 class EventService{
     public getEvents(){

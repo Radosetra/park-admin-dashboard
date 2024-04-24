@@ -1,26 +1,26 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import ImageSlider from '../ImageSlider';
-import { Specie } from '../../types/specie';
 import { DynamicInput, FileInput } from '../input';
 import { FaImage } from 'react-icons/fa';
-import { ActivityType } from '../../types/activityType';
 import {
   isActivityChecker,
   isLandscapeChecker,
   isSpecieChecker,
 } from '../../utils/typeUtils';
-import { LandscapeType } from '../../types/landscapeType';
 import ModalBase from './ModalBase';
+import { LandscapeDto } from '../../_type/landscape.dto.ts';
+import { ActivityDto } from '../../_type/activity.dto.ts';
+import { SpeciesDto } from '../../_type/species.dto.ts';
 
 interface ModalItemViewProps {
-  item: Specie | ActivityType | LandscapeType;
+  item: SpeciesDto | ActivityDto | LandscapeDto;
   setIsOpen: (value: boolean) => void;
 }
 
 export default function ModalItemView({ item, setIsOpen }: ModalItemViewProps) {
   const [isEditing, setIsEditing] = useState(false);
 
-  const itemName = (item: Specie | ActivityType | LandscapeType): string => {
+  const itemName = (item: SpeciesDto | ActivityDto | LandscapeDto): string => {
     let itemName = '';
     if (isSpecieChecker(item)) {
       itemName = item.specie_name;
@@ -34,7 +34,7 @@ export default function ModalItemView({ item, setIsOpen }: ModalItemViewProps) {
   };
 
   const itemDescription = (
-    item: Specie | ActivityType | LandscapeType,
+    item: SpeciesDto | ActivityDto | LandscapeDto,
   ): string => {
     let itemDescri = '';
     if (isSpecieChecker(item)) {
@@ -58,7 +58,7 @@ export default function ModalItemView({ item, setIsOpen }: ModalItemViewProps) {
         {/*body*/}
 
         {/* Image slider */}
-        {item.photos.length !== 0 && (
+        {item.pictures?.length !== 0 && (
           <div className="flex-auto">
             {isEditing ? (
               <FileInput
@@ -68,7 +68,7 @@ export default function ModalItemView({ item, setIsOpen }: ModalItemViewProps) {
                 style="border-dashed h-[4.5rem]"
               />
             ) : (
-              <ImageSlider height="h-[17rem]" images={item.photos} />
+              <ImageSlider height="h-[17rem]" images={item.pictures!} />
             )}
           </div>
         )}

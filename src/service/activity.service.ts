@@ -1,6 +1,6 @@
-import {HttpClient} from "@/lib/http.client";
-import {ENDPOINT} from "@/_constant/endpoint";
-import {CreateActivityDto} from "@/_type/activity.dto";
+import { HttpClient } from '../lib/http.client.ts';
+import { CreateActivityDto } from '../_type/activity.dto.ts';
+import { ENDPOINT } from '../_constant/endpoint.ts';
 
 class ActivityService {
     public getActivity(){
