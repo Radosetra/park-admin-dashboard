@@ -5,7 +5,7 @@ export interface SpeciesDto{
     specie_name: string
     specie_description: string
     specie_type: string
-    pictures:PhotoDto[]|null
+    pictures?:PhotoDto[]|null
 }
 export interface CreateSpeciesDto{
     specie_id?: string
