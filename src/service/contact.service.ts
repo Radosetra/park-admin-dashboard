@@ -14,10 +14,10 @@ class ContactService {
         return HttpClient.get(`${ENDPOINT.CONTACT}?status=${status}`)
     }
     public updateStatus(status:Partial<ContactList>, contact_id:string){
-        return HttpClient.put(`${ENDPOINT.CONTACT}/update/${contact_id}`, status)
+        return HttpClient.put(`${ENDPOINT.CONTACT}update/${contact_id}`, status)
     }
     public answerMessage(contact_id:string, response:ContactResponseDto){
-        return HttpClient.post(`${ENDPOINT.CONTACT}/${contact_id}/response`, response)
+        return HttpClient.post(`${ENDPOINT.CONTACT}${contact_id}/response`, response)
     }
 }
 

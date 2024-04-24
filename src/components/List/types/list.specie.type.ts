@@ -1,5 +1,5 @@
-import { Specie } from "../../../types/specie"
+import { SpecieType } from '../../../_type/species.dto.ts';
 
 export type ListCardSpecieProps = {
-    species: Specie[]
+    type: SpecieType
 }

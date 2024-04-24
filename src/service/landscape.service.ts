@@ -6,7 +6,7 @@ class LandscapeService{
         return HttpClient.get(ENDPOINT.LANDSCAPE)
     }
     public createLandScape(landscape:FormData){
-        return HttpClient.post(`${ENDPOINT.LANDSCAPE}/create`, landscape)
+        return HttpClient.post(`${ENDPOINT.LANDSCAPE}create`, landscape)
     }
 }
 export const landscapeService = new LandscapeService()

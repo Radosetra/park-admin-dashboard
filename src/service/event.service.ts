@@ -11,13 +11,13 @@ class EventService{
         return HttpClient.post(`${ENDPOINT.EVENT}${eventId}/interested`, client)
     }
     public createEvent(event:CreateEventDto){
-        return HttpClient.post(`${ENDPOINT.EVENT}/create`, event);
+        return HttpClient.post(`${ENDPOINT.EVENT}create`, event);
     }
     public editEvent (eventId:string, event:Partial<CreateEventDto>){
-        return HttpClient.put(`${ENDPOINT.EVENT}/update/${eventId}`, event)
+        return HttpClient.put(`${ENDPOINT.EVENT}update/${eventId}`, event)
     }
     public deleteEvent(eventId:string){
-        return HttpClient.delete(`${ENDPOINT.EVENT}/delete/${eventId}`)
+        return HttpClient.delete(`${ENDPOINT.EVENT}delete/${eventId}`)
     }
 }
 

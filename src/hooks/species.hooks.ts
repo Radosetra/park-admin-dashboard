@@ -1,6 +1,7 @@
 import {useMutation, useQuery} from "react-query";
 import { speciesService } from '../service/species.service.ts';
 import { queryClient } from '../lib/queryClient.ts';
+import { SpecieType } from '../_type/species.dto.ts';
 
 export const useFetchSpecies = ()=>{
     return useQuery({
@@ -16,5 +17,11 @@ export const useCreateSpecies = ()=>{
             await queryClient.invalidateQueries("species")
             await queryClient.resetQueries("species")
         }
+    })
+}
+export const useFetchSpeciesByType = (type:SpecieType)=>{
+    return useQuery({
+        queryKey: ["species", type],
+        queryFn: ()=> speciesService.getSpeciesByType(type)
     })
 }

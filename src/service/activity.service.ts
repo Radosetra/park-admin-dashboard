@@ -10,10 +10,10 @@ class ActivityService {
         return HttpClient.post(`${ENDPOINT.ACTIVITY}create`,activity)
     }
     public editActivity (activity:Partial<CreateActivityDto>, activity_id:string) {
-        return HttpClient.post(`${ENDPOINT.ACTIVITY}/edit/${activity_id}`,activity)
+        return HttpClient.post(`${ENDPOINT.ACTIVITY}edit/${activity_id}`,activity)
     }
     public deleteActivity (activity_id:string) {
-        return HttpClient.delete(`${ENDPOINT.ACTIVITY}/delete/${activity_id}`)
+        return HttpClient.delete(`${ENDPOINT.ACTIVITY}delete/${activity_id}`)
     }
 }
 
