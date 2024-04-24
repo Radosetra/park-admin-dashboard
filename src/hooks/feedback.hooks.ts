@@ -1,7 +1,7 @@
 import {useMutation, useQuery} from "react-query";
-import {feedbackService} from "@/service/feedback.service";
-import {FeedbackCreateDto, FeedbackDto} from "@/_type/feedback.dto";
-import {queryClient} from "@/lib/queryClient";
+import { feedbackService } from '../service/feedback.service.ts';
+import { queryClient } from '../lib/queryClient.ts';
+import { FeedbackDto } from '../_type/feedback.dto.ts';
 
 export const useFetchFeedback = ()=>{
     return useQuery({
@@ -9,7 +9,6 @@ export const useFetchFeedback = ()=>{
         queryFn: ()=> feedbackService.getFeedbacks()
     })
 }
-
 export const useFetchFeedbackById = (eventId:string)=>{
     return useQuery({
         queryKey:["feedback", eventId],

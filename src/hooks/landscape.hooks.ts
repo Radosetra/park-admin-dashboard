@@ -1,7 +1,7 @@
 import {useMutation, useQuery} from "react-query";
-import {landscapeService} from "@/service/landscape.service";
-import {CreateLandscapeDto} from "@/_type/landscape.dto";
-import {queryClient} from "@/lib/queryClient";
+import { landscapeService } from '../service/landscape.service.ts';
+import { CreateLandscapeDto } from '../_type/landscape.dto.ts';
+import { queryClient } from '../lib/queryClient.ts';
 
 export const useFetchLandscape = ()=>{
     return useQuery({

@@ -21,10 +21,10 @@ import Overview from './pages/Overview';
 import Feedback from './pages/Feedback';
 import AnimalSpecies from './pages/Species/Animal.species';
 import VegetalSpecies from './pages/Species/Vegetal.species';
-import DemoApp from './components/Scheduler/test';
 import Activity from './pages/Activity';
 import Landscape from './pages/Landscape';
 import Message from './pages/Message';
+import ReactQueryProvider from './provider/reactQuery.provider.tsx';
 
 function App() {
   const [loading, setLoading] = useState<boolean>(true);
@@ -41,7 +41,7 @@ function App() {
   return loading ? (
     <Loader />
   ) : (
-    <>
+    <ReactQueryProvider>
       <Routes>
         <Route
           index
@@ -215,7 +215,7 @@ function App() {
           }
         />
       </Routes>
-    </>
+    </ReactQueryProvider>
   );
 }
 

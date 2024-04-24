@@ -1,7 +1,7 @@
 import {useMutation, useQuery} from "react-query";
-import {speciesService} from "@/service/species.service";
-import {CreateSpeciesDto} from "@/_type/species.dto";
-import {queryClient} from "@/lib/queryClient";
+import { speciesService } from '../service/species.service.ts';
+import { CreateSpeciesDto } from '../_type/species.dto.ts';
+import { queryClient } from '../lib/queryClient.ts';
 
 export const useFetchSpecies = ()=>{
     return useQuery({
