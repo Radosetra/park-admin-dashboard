@@ -1,87 +1,96 @@
-import { useState } from 'react';
-import { FeedbackType, FeedbackStatus } from '../../types/feedbackType';
+import { useEffect, useState } from 'react';
+import { FeedbackStatus } from '../../types/feedbackType';
 import { truncateString } from '../../utils/stringUtils';
 import ModalFeedback from '../Modal/ModalFeedback';
+import { FeedbackDto } from '../../_type/feedback.dto';
+import {  useFetchFeedbackByStatus } from '../../hooks/feedback.hooks';
+import { convertToStr } from '../../utils/dateUtils';
 
-interface TableFeedbackProps {
-  // isOpen: boolean,
-  feedbackData: FeedbackType[],
-}
+const TableFeedback = () => {
+  
+  const {data:feedbackApproved, isSuccess:isFeedAppSuccess, isLoading:isFeedAppLoading} = useFetchFeedbackByStatus(FeedbackStatus.APPROVED)
+  const {data:feedbackPending, isSuccess:isFeedPendSuccess, isLoading:isFeedPendlLoading} = useFetchFeedbackByStatus(FeedbackStatus.PENDING)
+  const {data:feedbackRefused, isSuccess:isFeedRefSuccess, isLoading:isFeedRefLoading} = useFetchFeedbackByStatus(FeedbackStatus.REFUSED)
 
-
-const TableFeedback = ({feedbackData} : TableFeedbackProps) => {
-
-  const [currentStatus, setCurrentStatus] = useState<FeedbackStatus>(FeedbackStatus.approved);
+  const [feedbacks, setFeedbacks] = useState<FeedbackDto[]>(feedbackApproved?.data)
+  
+  const [currentStatus, setCurrentStatus] = useState<FeedbackStatus>(FeedbackStatus.PENDING);
 
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  const [currentFeedback, setCurrentFeedback] = useState<FeedbackType>({
-    sender: "",
-    name: "",
-    content: "",
-    date: "",
-    status: FeedbackStatus.approved,
-    photos: []
+  const [currentFeedback, setCurrentFeedback] = useState<FeedbackDto>({
+    feedback_id: "",
+    feedback_sender: "",
+    feedback_content: "",
+    feedback_date: new Date(),
+    feedback_status: FeedbackStatus.APPROVED,
+    pictures: []
   });
   
-  // Initialize feedbacks with the filtered feedback data based on currentStatus
-  let feedbacks: FeedbackType[] = feedbackData.filter(feedback => feedback.status === currentStatus);
-
-  // Modal 
-  // const [isModalOpen, setIsModalOpen] = useState(false);
 
   // Update feedbacks whenever currentStatus changes
   const handleStatusChange = (status: FeedbackStatus) => {
     setCurrentStatus(status);
-    feedbacks = feedbackData.filter(feedback => feedback.status === status);
+    if(status === FeedbackStatus.APPROVED){
+      setFeedbacks(feedbackApproved?.data)
+    } else if (status === FeedbackStatus.PENDING){
+      setFeedbacks(feedbackPending?.data)
+    } else if(status === FeedbackStatus.REFUSED){
+      setFeedbacks(feedbackRefused?.data)
+    }
   };
-  
 
+  useEffect(()=>{
+    setFeedbacks(feedbackPending?.data)
+  }, [feedbackPending, isFeedPendSuccess])
+
+  
+  
   return (
-    <div className="rounded-xl border border-stroke bg-white px-5 pt-6 pb-2.5 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:pb-1">
+    <div className="rounded-xl border border-stroke w-full bg-white px-5 pt-6 pb-2.5 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:pb-1">
       <div className="flex flex-col">
         {/* Tabs section */}
         <div className="flex gap-10 items-start">
           <div 
-            className={`p-2.5 text-center xl:p-3 cursor-pointer ${currentStatus === FeedbackStatus.approved && `border-b border-black dark:border-white font-bold`}`}
-            onClick={() => handleStatusChange(FeedbackStatus.approved)}
+            className={`p-2.5 text-center xl:p-3 cursor-pointer ${currentStatus === FeedbackStatus.APPROVED && `border-b border-black dark:border-white font-bold`}`}
+            onClick={() => handleStatusChange(FeedbackStatus.APPROVED)}
           >
-              <h5 className={`text-sm dark:text-white ${currentStatus === FeedbackStatus.approved && `text-black font-bold`}`}>
+              <h5 className={`text-sm dark:text-white ${currentStatus === FeedbackStatus.APPROVED && `text-black font-bold`}`}>
                 Approved
               </h5>
           </div>
 
           <div 
-            className={`p-2.5 text-center xl:p-3 cursor-pointer ${currentStatus === FeedbackStatus.pending && `border-b border-black dark:border-white`}`}
-            onClick={() => handleStatusChange(FeedbackStatus.pending)}
+            className={`p-2.5 text-center xl:p-3 cursor-pointer ${currentStatus === FeedbackStatus.PENDING && `border-b border-black dark:border-white`}`}
+            onClick={() => handleStatusChange(FeedbackStatus.PENDING)}
           >
-              <h5 className={`text-sm dark:text-white ${currentStatus === FeedbackStatus.pending && `text-black font-bold`}`}>
+              <h5 className={`text-sm dark:text-white ${currentStatus === FeedbackStatus.PENDING && `text-black font-bold`}`}>
                 Pending
               </h5>
           </div>
 
           <div 
-            className={`p-2.5 text-center xl:p-3 cursor-pointer ${currentStatus === FeedbackStatus.declined && `border-b border-black dark:border-white`}`}
-            onClick={() => handleStatusChange(FeedbackStatus.declined)}
+            className={`p-2.5 text-center xl:p-3 cursor-pointer ${currentStatus === FeedbackStatus.REFUSED && `border-b border-black dark:border-white`}`}
+            onClick={() => handleStatusChange(FeedbackStatus.REFUSED)}
           >
-              <h5 className={`text-sm dark:text-white ${currentStatus === FeedbackStatus.declined && `text-black font-bold`}`}>
-                Declined
+              <h5 className={`text-sm dark:text-white ${currentStatus === FeedbackStatus.REFUSED && `text-black font-bold`}`}>
+                Refused
               </h5>
           </div>
         </div>
 
         {/* Table Header */}
-        <div className="grid grid-cols-3 rounded-sm bg-gray-2 dark:bg-meta-4 sm:grid-cols-5">
+        <div className="grid grid-cols-3 rounded-sm bg-gray-2 dark:bg-meta-4 sm:grid-cols-4">
           <div className="p-2.5 text-center xl:p-3">
             <h5 className="text-sm font-medium uppercase ">
               Sender
             </h5>
           </div>
-          <div className="p-2.5 text-center xl:p-3">
+          {/* <div className="p-2.5 text-center xl:p-3">
             <h5 className="text-sm font-medium uppercase ">
               Name
             </h5>
-          </div>
+          </div> */}
           <div className="p-2.5 text-center xl:p-3">
             <h5 className="text-sm font-medium uppercase ">
               Content
@@ -100,8 +109,8 @@ const TableFeedback = ({feedbackData} : TableFeedbackProps) => {
         </div>
 
         {/* Table body */}
-        {feedbacks.map((feedback, key) => (
-          <div className={`grid grid-cols-3 sm:grid-cols-5 hover:shadow-xl hover:scale-105 transition duration-300 ${
+        {feedbacks?.map((feedback, key) => (
+          <div className={`grid grid-cols-3 sm:grid-cols-4 hover:shadow-xl hover:scale-105 transition duration-300 ${
             key === feedbacks.length - 1
               ? ''
               : 'border-b border-stroke dark:border-strokedark'
@@ -109,25 +118,25 @@ const TableFeedback = ({feedbackData} : TableFeedbackProps) => {
           key={key}>
             <div className="flex items-center justify-center p-2.5 xl:p-3">
               <p className="text-black dark:text-white font-medium">
-                {feedback.sender}
+                {feedback.feedback_sender}
               </p>
             </div>
 
-            <div className="flex items-center justify-center p-2.5 xl:p-3">
+            {/* <div className="flex items-center justify-center p-2.5 xl:p-3">
               <p className="text-black dark:text-white font-medium">
-                {feedback.name}
+                {feedback.feedback_sender}
               </p>
-            </div>
+            </div> */}
 
             <div className="flex items-center justify-center p-2.5 xl:p-3">
               <p className="text-black dark:text-white font-light">
-                {truncateString(feedback.content, 40)}
+                {truncateString(feedback.feedback_content, 40)}
               </p>
             </div>
 
             <div className="flex items-center justify-center p-2.5 xl:p-3">
-              <p className="text-black dark:text-white font-medium">
-                {feedback.date}
+              <p className="text-black text-sm dark:text-white font-medium">
+                {convertToStr(feedback.feedback_date)}
               </p>
             </div>
 
