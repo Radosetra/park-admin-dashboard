@@ -1,7 +1,7 @@
 export enum FeedbackStatus {
-    approved = "approved",
-    pending = "pending",
-    declined = "declined"
+    APPROVED = "approved",
+    PENDING = "pending",
+    REFUSED = "refused"
 }
 
 export type FeedbackType = {
