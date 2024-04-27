@@ -1,55 +1,69 @@
+import { useState, useEffect } from 'react';
 import flatpickr from 'flatpickr';
-import { useEffect } from 'react';
+import { convertToStr } from '../../../utils/dateUtils';
 
 type DatePickerProps = {
-  size?:"small"|"medium"|"large" 
-  label: string
-}
+  size?: 'small' | 'medium' | 'large';
+  label: string;
+  defaultDate?: Date | string;
+};
 
-const DatePickerOne = (props:DatePickerProps) => {
-  const {size, label} = props
+const DatePickerOne = (props: DatePickerProps) => {
+  const { size, label, defaultDate } = props;
 
-  let labelSize = "text-base"
-    switch (size!) {
-        case "small":
-            labelSize = "text-sm"
-            break;
-        case "medium":
-            labelSize = "text-base"
-            break;
-        case "large":
-            labelSize = "text-lg"
-            break;
-        default:
-            labelSize = "text-base"
-            break;
-    }
+  const [selectedDate, setSelectedDate] = useState<string | null>(null); // State to hold the selected date
+
+  let labelSize = 'text-base';
+  switch (size) {
+    case 'small':
+      labelSize = 'text-sm';
+      break;
+    case 'medium':
+      labelSize = 'text-base';
+      break;
+    case 'large':
+      labelSize = 'text-lg';
+      break;
+    default:
+      labelSize = 'text-base';
+      break;
+  }
 
   useEffect(() => {
-    // Init flatpickr
+    
+    defaultDate ? console.log("Date : "+convertToStr(defaultDate)): console.log("No default date");
+    
     flatpickr('.form-datepicker', {
       mode: 'single',
       static: true,
       monthSelectorType: 'static',
-      dateFormat: 'M j, Y',
+      dateFormat: 'Y-m-d',
+      defaultDate: defaultDate ? convertToStr(defaultDate) : undefined,
+      onChange: function (selectedDates) {
+        const date = selectedDates[0]; // get the selected date
+        if (date) {
+          // Create a new Date object using the UTC year, month, and day
+          const formattedDate = new Date(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate()));
+          // Set the formatted date in state, converting to ISO string and slicing to get YYYY-MM-DD format
+          setSelectedDate(formattedDate.toISOString().slice(0, 10));
+        }
+        
+      },
       prevArrow:
         '<svg className="fill-current" width="7" height="11" viewBox="0 0 7 11"><path d="M5.4 10.8l1.4-1.4-4-4 4-4L5.4 0 0 5.4z" /></svg>',
       nextArrow:
         '<svg className="fill-current" width="7" height="11" viewBox="0 0 7 11"><path d="M1.4 10.8L0 9.4l4-4-4-4L1.4 0l5.4 5.4z" /></svg>',
     });
 
-    
-  }, []);
+  }, [defaultDate]); 
 
   return (
-    <div className='flex flex-col'>
-      <label className={`${labelSize}`}>
-        {label}
-      </label>
+    <div className="flex flex-col">
+      <label className={`${labelSize}`}>{label}</label>
       <div className="relative py-2">
         <input
           className="form-datepicker w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 font-normal outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
-          placeholder="mm/dd/yyyy"
+          placeholder="yyyy/mm/dd"
           data-class="flatpickr-right"
         />
 
@@ -68,6 +82,7 @@ const DatePickerOne = (props:DatePickerProps) => {
           </svg>
         </div>
       </div>
+      {selectedDate && <p>Selected Date: {selectedDate}</p>}
     </div>
   );
 };

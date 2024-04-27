@@ -1,11 +1,14 @@
 import { HttpClient } from '../lib/http.client.ts';
 import { ClientDto } from '../_type/client.dto.ts';
-import { CreateEventDto } from '../_type/event.dto.ts';
+import { CreateEventDto, EditEventDto, EventDto } from '../_type/event.dto.ts';
 import { ENDPOINT } from '../_constant/endpoint.ts';
 
 class EventService{
     public getEvents(){
-        return HttpClient.get(ENDPOINT.EVENT)
+        return HttpClient.get(ENDPOINT.EVENT+"all/")
+    }
+    public getEventById(eventId: string){
+        return HttpClient.get(ENDPOINT.EVENT+eventId)
     }
     public addToNotifications(eventId:string, client:ClientDto){
         return HttpClient.post(`${ENDPOINT.EVENT}${eventId}/interested`, client)
@@ -13,7 +16,9 @@ class EventService{
     public createEvent(event:CreateEventDto){
         return HttpClient.post(`${ENDPOINT.EVENT}create`, event);
     }
-    public editEvent (eventId:string, event:Partial<CreateEventDto>){
+    public editEvent (eventId:string, event:EditEventDto){
+        console.log("Edit event", eventId, event);
+        
         return HttpClient.put(`${ENDPOINT.EVENT}update/${eventId}`, event)
     }
     public deleteEvent(eventId:string){
