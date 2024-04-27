@@ -19,6 +19,8 @@ export enum ENDPOINT {
     GALLERY = "picture/",
 
     TAG = "tag/",
-    TAGCREATE = "tag/create/"
+    TAGCREATE = "tag/create/",
 
+    COUNT="count/",
+    GALLERY = "picture/"
 }

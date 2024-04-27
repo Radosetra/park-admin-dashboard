@@ -12,7 +12,7 @@ const ECommerce: React.FC = () => {
   return (
     <DefaultLayout>
       <div className="grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-6 xl:grid-cols-4 2xl:gap-7.5">
-        <CardDataStats title="Prix d'entré" total="5 000 Ar">
+        <CardDataStats title="Entry fees" total="from $740 to $1700 per adult">
           <svg
             className="fill-primary dark:fill-white"
             width="22"
@@ -31,7 +31,7 @@ const ECommerce: React.FC = () => {
             />
           </svg>
         </CardDataStats>
-        <CardDataStats title="Total Feedback" total="500" >
+        <CardDataStats title="All Pending Feedback" total="500" >
           <svg
             className="fill-primary dark:fill-white"
             width="20"
@@ -54,7 +54,7 @@ const ECommerce: React.FC = () => {
             />
           </svg>
         </CardDataStats>
-        <CardDataStats title="Total mise en contact" total="200">
+        <CardDataStats title="All pending contact" total="200">
           <svg
             className="fill-primary dark:fill-white"
             width="22"
@@ -73,7 +73,7 @@ const ECommerce: React.FC = () => {
             />
           </svg>
         </CardDataStats>
-        <CardDataStats title="Total evenement" total="3">
+        <CardDataStats title="All occuring event" total="3">
           <svg
             className="fill-primary dark:fill-white"
             width="22"

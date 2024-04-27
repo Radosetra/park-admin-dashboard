@@ -20,7 +20,7 @@ import Event from './pages/Event';
 import Overview from './pages/Overview';
 import Feedback from './pages/Feedback';
 import AnimalSpecies from './pages/Species/Animal.species';
-import VegetalSpecies from './pages/Species/Vegetal.species';
+import VegetalSpecies from './pages/Species/PlantSpecies.tsx';
 import Activity from './pages/Activity';
 import Landscape from './pages/Landscape';
 import Message from './pages/Message';
@@ -71,7 +71,7 @@ function App() {
           }
         />
         <Route
-          path="/species/vegetal"
+          path="/species/plant"
           element={
             <>
               {/* <PageTitle title="Calendar | TailAdmin - Tailwind CSS Admin Dashboard Template" /> */}

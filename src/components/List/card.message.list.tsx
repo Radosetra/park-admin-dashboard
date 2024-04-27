@@ -1,33 +1,30 @@
-import { useEffect, useState } from "react"
-import { MessageType } from "../../types/messageType"
-import MessageCard from "../card/message.card"
-import ModalMessageView from "../Modal/ModalMessageView"
+import { useEffect, useState } from 'react';
+import MessageCard from '../card/message.card';
+import ModalMessageView from '../Modal/ModalMessageView';
+import { ContactList, ContactStatus } from '../../_type/contact.dto.ts';
+import { useFetchContactByStatus } from '../../hooks/contact.hooks.ts';
 
-interface ListCardMessageProps {
-  messages: MessageType[]
-}
 
-const ListCardMessage = (props: ListCardMessageProps) => {
-  const {messages} = props
-
-  const [message, setMessage] = useState<MessageType>({
-    sender: '',
-    date: '',
-    status: "Pending",
-    content: ''
+const ListCardMessage = () => {
+  const [messages, setMessages] = useState<ContactList[]>()
+  const [message, setMessage] = useState<ContactList>({
+    user_email: '',
+    contact_date: new Date(),
+    contact_status: ContactStatus.PENDING,
+    contact_content:""
   })
-
-  const [messageData, setMessageData] = useState<MessageType[]>(messages.filter(message => message.status === "Responded"));
-  
-
+  const [statusTab, setStatusTab] = useState<ContactStatus>(ContactStatus.PENDING)
   const [trigger, setTrigger] = useState(false);
-
   const [isOpen, setIsOpen] = useState(false);
 
-  const handleTrigger = () => {
+  const {data, isSuccess} = useFetchContactByStatus(statusTab)
+
+  useEffect(() => {
+    setMessages(data?.data)
+  }, [data, isSuccess]);
+  const handleTrigger = (status:ContactStatus) => {
     setTrigger(!trigger)
-    const newStatus = trigger ? "Pending" : "Responded"; // Determine the new status based on the toggle
-    setMessageData(messages.filter(message => message.status !== newStatus));
+    setStatusTab(status)
   }
 
   return(
@@ -37,12 +34,12 @@ const ListCardMessage = (props: ListCardMessageProps) => {
         <h3 className="text-black text-[1.2rem] font-bold">Inbox</h3>
         <div className="flex items-center justify-center bg-gray rounded-lg p-2 ">
           <div 
-            className={`text-[0.75rem] text-black px-3 py-1 rounded-xl cursor-pointer ${!trigger && "bg-white"}`}
-            onClick={()=> handleTrigger()}
+            className={`text-[0.75rem] text-black px-3 py-1 rounded-xl cursor-pointer ${trigger && "bg-white"}`}
+            onClick={()=> handleTrigger(ContactStatus.ANSWERED)}
           >Responded</div>
           <div 
-            className={`text-[0.75rem] text-black px-3 py-1 rounded-xl cursor-pointer ${trigger && "bg-white"}`}
-            onClick={()=> handleTrigger()}
+            className={`text-[0.75rem] text-black px-3 py-1 rounded-xl cursor-pointer ${!trigger && "bg-white"}`}
+            onClick={()=> handleTrigger(ContactStatus.PENDING)}
           >Pending</div>
         </div>
       </div>
@@ -51,7 +48,7 @@ const ListCardMessage = (props: ListCardMessageProps) => {
 
       <div className="flex flex-col gap-2">
         {
-          messageData?.map((message, key) => (
+          messages?.map((message, key) => (
             <MessageCard 
               key={key}
               message={message}
@@ -64,7 +61,8 @@ const ListCardMessage = (props: ListCardMessageProps) => {
 
       {
         isOpen && 
-        <ModalMessageView 
+        <ModalMessageView
+          status={statusTab}
           message={message}
           setIsOpen={setIsOpen}
         />

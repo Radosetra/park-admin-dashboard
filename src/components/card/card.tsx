@@ -1,4 +1,4 @@
-import { CardProps } from "./types/card.type"
+import { CardProps } from './types/card.type';
 
 export const Card = (props:CardProps) => {
     const { style, children, overlay=false, shadow="none" } = props

@@ -3,11 +3,11 @@ import DefaultLayout from '../../layout/DefaultLayout';
 import { ListCardSpecie } from '../../components/List/card.specie.list';
 import { SpecieType } from '../../_type/species.dto.ts';
 
-const vegetalSpecies = () => {
+const PlantSpecies = () => {
   // fetch data from a json file
   return (
     <DefaultLayout>
-      <Breadcrumb pageName="Vegetal" />
+      <Breadcrumb pageName="Plant" />
 
       <ListCardSpecie 
         type={SpecieType.PLANT}
@@ -19,4 +19,4 @@ const vegetalSpecies = () => {
   
 };
 
-export default vegetalSpecies;
+export default PlantSpecies;
