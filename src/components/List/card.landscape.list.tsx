@@ -6,11 +6,9 @@ import { CardActions } from '../card/components';
 import { CardBody } from '../card/components';
 import { CardBodyTitle } from '../card/components';
 import { CardHeader } from '../card/components';
-import { FaPlus } from 'react-icons/fa';
-import ModalItemView from '../Modal/ModalItemView';
-import ModalCreateItem from '../Modal/ModalCreateItem';
 import { LandscapeDto } from '../../_type/landscape.dto.ts';
 import { useFetchLandscape } from '../../hooks/landscape.hooks.ts';
+import ModalLandscapeView from '../Modal/ModalLandscapeView.tsx';
 
 export const ListCardLandscape = () => {
   const [landscapes, setLandscapes] = useState<LandscapeDto[]>()
@@ -26,27 +24,29 @@ export const ListCardLandscape = () => {
     landscape_name: '',
     landscape_type: 'type1',
     landscape_description: '',
+    landscape_locationX:0,
+    landscape_locationY:0,
     pictures: [],
   });
 
   const [isViewOpen, setIsViewOpen] = useState(false);
-  const [isCreateFormOpen, setIsCreateFormOpen] = useState(false);
+  // const [isCreateFormOpen, setIsCreateFormOpen] = useState(false);
 
   return (
     <div className="flex flex-col">
       <div className="flex justify-end mb-5">
-        <Button
-          size="medium"
-          label="Add"
-          style=""
-          type="button"
-          variant="primary"
-          onClick={() => setIsCreateFormOpen(true)}
-          leftIcon={<FaPlus />}
-        />
+        {/*<Button*/}
+        {/*  size="medium"*/}
+        {/*  label="Add"*/}
+        {/*  style=""*/}
+        {/*  type="button"*/}
+        {/*  variant="primary"*/}
+        {/*  onClick={() => setIsCreateFormOpen(true)}*/}
+        {/*  leftIcon={<FaPlus />}*/}
+        {/*/>*/}
       </div>
       <div className="flex flex-col">
-        <div className="flex flex-wrap gap-5 justify-between">
+        <div className="flex flex-wrap gap-5">
           {landscapes?.map((landscape, key) => {
             const image: string = landscape.pictures?landscape.pictures[0]?.picture_url:"";
             return (
@@ -67,7 +67,7 @@ export const ListCardLandscape = () => {
                   <div className="flex flex-col">
                     <div className="flex justify-between">
                       <span className="text-black text-[1.1rem] font-700">
-                        Type
+                        {`[${landscape.landscape_locationX}, ${landscape.landscape_locationY}]`}
                       </span>
                       <p>{landscape.landscape_type}</p>
                     </div>
@@ -93,12 +93,12 @@ export const ListCardLandscape = () => {
         </div>
 
         {isViewOpen && (
-          <ModalItemView item={currentLandscape} setIsOpen={setIsViewOpen} />
+          <ModalLandscapeView item={currentLandscape} setIsOpen={setIsViewOpen} />
         )}
 
-        {isCreateFormOpen && (
-          <ModalCreateItem item="landscape" setIsOpen={setIsCreateFormOpen} />
-        )}
+        {/*{isCreateFormOpen && (*/}
+        {/*  <ModalCreateItem item="landscape" setIsOpen={setIsCreateFormOpen} />*/}
+        {/*)}*/}
       </div>
     </div>
   );

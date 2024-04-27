@@ -1,16 +1,16 @@
 import { useEffect, useState } from 'react';
 import { truncateString } from '../../utils/stringUtils';
-import { Button } from '../button/button';
-import { Card } from '../card/card';
-import { CardActions } from '../card/components/card.actions';
-import { CardBody } from '../card/components/card.body';
-import { CardBodyTitle } from '../card/components/card.body.title';
-import { CardHeader } from '../card/components/card.header';
-import ModalItemView from '../Modal/ModalItemView';
+import { Button } from '../button';
+import { Card } from '../card';
+import { CardActions } from '../card/components';
+import { CardBody } from '../card/components';
+import { CardBodyTitle } from '../card/components';
+import { CardHeader } from '../card/components';
 import ModalCreateItem from '../Modal/ModalCreateItem';
 import { FaPlus } from 'react-icons/fa';
 import { ActivityDto } from '../../_type/activity.dto.ts';
 import { useFetchActivity } from '../../hooks/activity.hooks.ts';
+import ModalActivityView from '../Modal/ModalActivityView.tsx';
 
 export const ListCardActivity = () => {
   const [activities, setActivities] = useState<ActivityDto[]>()
@@ -44,7 +44,7 @@ export const ListCardActivity = () => {
       </div>
 
       <div className="flex flex-col">
-        <div className="flex flex-wrap gap-5 justify-between">
+        <div className="flex flex-wrap gap-5">
           {activities?.map((activity, key) => {
             const image: string = activity.pictures?activity.pictures[0]?.picture_url:"";
             return (
@@ -83,7 +83,7 @@ export const ListCardActivity = () => {
         </div>
 
         {isViewOpen && (
-          <ModalItemView item={currentActivity} setIsOpen={setIsViewOpen} />
+          <ModalActivityView item={currentActivity} setIsOpen={setIsViewOpen} />
         )}
 
         {isCreateFormOpen && (

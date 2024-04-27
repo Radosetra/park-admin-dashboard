@@ -1,4 +1,4 @@
-import { ContactDto, ContactList, ContactResponseDto } from '../_type/contact.dto.ts';
+import { ContactDto, ContactList, ContactResponseDto, ContactStatus } from '../_type/contact.dto.ts';
 import { HttpClient } from '../lib/http.client.ts';
 import { ENDPOINT } from '../_constant/endpoint.ts';
 
@@ -10,7 +10,7 @@ class ContactService {
     public getContacts() {
         return HttpClient.get(ENDPOINT.CONTACT)
     }
-    public getContactsByStatus(status:string){
+    public getContactsByStatus(status:ContactStatus){
         return HttpClient.get(`${ENDPOINT.CONTACT}?status=${status}`)
     }
     public updateStatus(status:Partial<ContactList>, contact_id:string){

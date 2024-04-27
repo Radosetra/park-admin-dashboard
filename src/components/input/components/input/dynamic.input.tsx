@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { ChangeEvent, useState } from 'react';
 import { Button, IconButton } from '../../../button';
 import { FaPencil } from 'react-icons/fa6';
 
@@ -8,13 +8,15 @@ type DynamicInputProps = {
   style?: string;
   type: string;
   size?: 'small' | 'medium' | 'large';
+  onSubmit?:()=>void
+  onChange?:(e:ChangeEvent<HTMLInputElement>)=>void
+  value?: string
 };
 
 export const DynamicInput = (props: DynamicInputProps) => {
-  const { content, label, style, type, size = 'medium' } = props;
-  const [value, setValue] = useState<string>(content || '');
+  const { content, label, style, value, type, size = 'medium', onSubmit, onChange } = props;
   const [isOpen, setIsOpen] = useState<boolean>(false);
-  let labelSize = 'text-base';
+  let labelSize: string;
   switch (size!) {
     case 'small':
       labelSize = 'text-sm';
@@ -30,12 +32,6 @@ export const DynamicInput = (props: DynamicInputProps) => {
       break;
   }
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setValue(e.target.value);
-  };
-  const handleSubmit = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
-    e.preventDefault();
-  };
   return (
     <div className="flex w-full">
       {isOpen ? (
@@ -45,13 +41,14 @@ export const DynamicInput = (props: DynamicInputProps) => {
             name={label}
             className={`in-input focus:ring-0 focus:border-0 in-input-${size} w-[80%]`}
             defaultValue={content}
+            value={value!}
             // value={value}
             autoFocus
             onBlur={() => setIsOpen(false)}
-            onChange={handleChange}
+            onChange={onChange}
           />
           <Button
-            onClick={() => handleSubmit}
+            onClick={onSubmit!}
             label="Edit"
             type="submit"
             size={size}
