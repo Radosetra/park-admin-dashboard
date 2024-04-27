@@ -12,6 +12,9 @@ class SpeciesService {
     public getSpeciesByType(type:SpecieType){
         return HttpClient.get(`${ENDPOINT.SPECIES}type?q=${type}`)
     }
+    public editSpecies(specie_id:string, specie:FormData){
+        return HttpClient.put(`${ENDPOINT.SPECIES}update/${specie_id}`, specie)
+    }
 }
 
 export const speciesService = new SpeciesService()

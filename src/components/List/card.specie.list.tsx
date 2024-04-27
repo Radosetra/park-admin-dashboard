@@ -8,21 +8,20 @@ import { CardBodyTitle } from '../card/components';
 import { CardHeader } from '../card/components';
 import { ListCardSpecieProps } from './types/list.specie.type';
 import { FaPlus } from 'react-icons/fa';
-import ModalItemView from '../Modal/ModalItemView';
 import ModalCreateItem from '../Modal/ModalCreateItem';
 import { SpeciesDto, SpecieType } from '../../_type/species.dto.ts';
 import { useFetchSpeciesByType } from '../../hooks/species.hooks.ts';
-import { Specie } from '../../types/specie.ts';
+import ModalSpecieView from '../Modal/ModalSpecieView.tsx';
 
 export const ListCardSpecie = ({
   type
 }: ListCardSpecieProps) => {
 
-  const [currentSpecie, setCurrentSpecie] = useState<Specie>({
+  const [currentSpecie, setCurrentSpecie] = useState<SpeciesDto>({
     specie_name: "",
     specie_description: "",
     specie_type: SpecieType.ANIMAL,
-    photos: []
+    pictures: []
   });
   const [isOpen, setIsOpen] = useState(false);
   const [isCreateFormOpen, setIsCreateFormOpen] = useState(false);
@@ -68,7 +67,7 @@ export const ListCardSpecie = ({
                     <Button
                       label="View"
                       onClick={() => {
-                        setCurrentSpecie(specie as Specie);
+                        setCurrentSpecie(specie as SpeciesDto);
                         setIsOpen(true);
                       }}
                       type="button"
@@ -81,7 +80,7 @@ export const ListCardSpecie = ({
           })}
         </div>
 
-        {isOpen && <ModalItemView item={currentSpecie} setIsOpen={setIsOpen} />}
+        {isOpen && <ModalSpecieView item={currentSpecie} setIsOpen={setIsOpen} />}
 
         {isCreateFormOpen && (
           <ModalCreateItem

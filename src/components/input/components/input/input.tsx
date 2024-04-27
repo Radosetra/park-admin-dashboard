@@ -6,7 +6,7 @@ type InputProps = {
     name:string
     iconEnd?:React.ReactNode
     iconStart?:React.ReactNode
-    placeholder:string
+    placeholder?:string
     style?:string
     onChanged:(param:any)=>void
     type:inputType
@@ -17,7 +17,7 @@ type InputProps = {
 }
 export const InputField = (props:InputProps)=> {
     const {label, name, iconStart,iconEnd, placeholder, style, onChanged, type, size="medium", disabled=false, value=""} = props
-    let labelSize = "text-base"
+    let labelSize: string
     switch (size!) {
         case "small":
             labelSize = "text-sm"
@@ -53,7 +53,7 @@ export const InputField = (props:InputProps)=> {
                     placeholder={placeholder}
                     onChange={onChanged}
                     disabled={disabled}
-                    value={value}
+                    defaultValue={value}
                     className={clsx(
                         "in-input",
                         {

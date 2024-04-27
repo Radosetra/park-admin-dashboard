@@ -6,5 +6,6 @@ export enum ENDPOINT {
     SPECIES = "specie/",
     LANDSCAPE = "landscape/",
     CONTACT = "contact/",
+    COUNT="count/",
     GALLERY = "picture/"
 }

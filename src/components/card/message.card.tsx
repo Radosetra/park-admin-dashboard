@@ -1,16 +1,18 @@
-import { MessageType } from '../../types/messageType';
 import { truncateString } from '../../utils/stringUtils';
 import { Card } from './card';
 import { CardBody } from './components';
+import { ContactList } from '../../_type/contact.dto.ts';
+import { formatDistanceToNow } from 'date-fns';
 
 interface MessageCardProps {
-  message: MessageType;
+  message: ContactList;
   setIsOpen: (param: boolean) => void
-  setCurrentMessage: (param: MessageType) => void
+  setCurrentMessage: (param: ContactList) => void
 }
 
 const MessageCard = (props: MessageCardProps) => {
   const { message, setIsOpen, setCurrentMessage } = props;
+  const relativeDate = formatDistanceToNow(message.contact_date)
   return (
     <div 
       className=""
@@ -29,21 +31,21 @@ const MessageCard = (props: MessageCardProps) => {
             <div className="flex items-center justify-between gap-2">
               {/* Profil */}
               <div className="flex items-center justify-center bg-primary text-white text-md font-medium w-[2.5rem] h-[2.5rem] rounded-full">
-                {message.sender[0].toUpperCase()}
+                {message.user_email[0].toUpperCase()}
               </div>
 
               {/* Name */}
               <div className="flex items-center justify-center text-black  dark:text-white text-[1.5rem] opacity-4">
-                {message.sender}
+                {message.user_email}
               </div>
             </div>
 
-            <span className="text-black">{message.date}</span>
+            <span className="text-black">{relativeDate}</span>
           </div>
         </div>
 
         <div className="text-customGray-400/80">
-          {truncateString(message.content,200)}
+          {truncateString(message.contact_content,200)}
         </div>
       </CardBody>
     </Card>

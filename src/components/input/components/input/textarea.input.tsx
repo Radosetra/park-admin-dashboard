@@ -1,16 +1,18 @@
+import { ChangeEvent } from 'react';
+
 type TextAreaProps = {
     cols?:number,
     rows?:number,
     style?:string,
     placeholder?:string
     label?: string 
-    onChanged:()=>void
+    onChanged:(()=>void)|((e:ChangeEvent<HTMLTextAreaElement>)=>void)
     size?:"small"|"medium"|"large" 
     value?: string
 }
 export const TextArea = (props:TextAreaProps)=>{
     const {cols, rows=1, placeholder, style, onChanged, size="medium", label, value=''} = props
-    let labelSize = "text-base"
+    let labelSize: string
     switch (size!) {
         case "small":
             labelSize = "text-sm"
@@ -36,8 +38,7 @@ export const TextArea = (props:TextAreaProps)=>{
                     </label>
                 )
             }
-            <textarea name="" id="" cols={cols} rows={rows} onChange={onChanged} className={`in-input in-input-${size} border-[1.5px] border-stroke focus:ring-transparent w-full rounded-lg h-full px-5 py-3 outline-none focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary ${style}`} placeholder={placeholder} autoFocus>
-                {value}
+            <textarea defaultValue={value} name="" id="" cols={cols} rows={rows} onChange={onChanged} className={`in-input in-input-${size} border-[1.5px] border-stroke focus:ring-transparent w-full rounded-lg h-full px-5 py-3 outline-none focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary ${style}`} placeholder={placeholder} autoFocus>
             </textarea>
         </div>
     )

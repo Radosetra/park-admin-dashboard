@@ -25,3 +25,13 @@ export const useFetchSpeciesByType = (type:SpecieType)=>{
         queryFn: ()=> speciesService.getSpeciesByType(type)
     })
 }
+export const useEditSpecie = (specie_id:string)=>{
+    return useMutation({
+        mutationKey: ["species_edit", specie_id],
+        mutationFn: (specie:FormData)=> speciesService.editSpecies(specie_id, specie),
+        onSuccess: async ()=>{
+            await queryClient.invalidateQueries("species")
+            await queryClient.resetQueries("species")
+        }
+    })
+}
