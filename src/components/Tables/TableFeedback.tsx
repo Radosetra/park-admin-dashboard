@@ -7,7 +7,7 @@ import {  useFetchFeedbackByStatus } from '../../hooks/feedback.hooks';
 import { convertToStr } from '../../utils/dateUtils';
 
 const TableFeedback = () => {
-  
+
   const {data:feedbackApproved, isSuccess:isFeedAppSuccess, isLoading:isFeedAppLoading} = useFetchFeedbackByStatus(FeedbackStatus.APPROVED)
   const {data:feedbackPending, isSuccess:isFeedPendSuccess, isLoading:isFeedPendlLoading} = useFetchFeedbackByStatus(FeedbackStatus.PENDING)
   const {data:feedbackRefused, isSuccess:isFeedRefSuccess, isLoading:isFeedRefLoading} = useFetchFeedbackByStatus(FeedbackStatus.REFUSED)

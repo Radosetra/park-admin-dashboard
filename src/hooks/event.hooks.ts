@@ -2,13 +2,20 @@ import {useMutation, useQuery} from "react-query";
 
 import { eventService } from '../service/event.service.ts';
 import { ClientDto } from '../_type/client.dto.ts';
-import { CreateEventDto } from '../_type/event.dto.ts';
+import { CreateEventDto, EditEventDto, EventDto } from '../_type/event.dto.ts';
 import { queryClient } from '../lib/queryClient.ts';
 
 export const useFetchEvents = ()=>{
     return useQuery({
         queryKey:["events"],
         queryFn: ()=>eventService.getEvents()
+    })
+}
+
+export const useFetchEventById = (eventId: string)=>{
+    return useQuery({
+        queryKey:["event", eventId],
+        queryFn: ()=>eventService.getEventById(eventId)
     })
 }
 
@@ -32,7 +39,7 @@ export const useCreateEvent = ()=>{
 export const useEditEvent = (event_id:string)=>{
     return useMutation({
         mutationKey:["editEvent"],
-        mutationFn: (event:Partial<CreateEventDto>)=>eventService.editEvent(event_id,event),
+        mutationFn: (event:EditEventDto)=>eventService.editEvent(event_id,event),
         onSuccess: async ()=>{
             await queryClient.invalidateQueries("events")
             await queryClient.resetQueries("events")

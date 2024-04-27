@@ -3,8 +3,13 @@ import DefaultLayout from '../layout/DefaultLayout';
 import CoverOne from '../images/cover/cover-01.png';
 import userSix from '../images/user/user-06.png';
 import { Link } from 'react-router-dom';
+import { useEffect } from 'react';
 
 const Profile = () => {
+  useEffect(()=>{
+    console.log("Date", new Date());
+    
+  }, [])
   return (
     <DefaultLayout>
       <Breadcrumb pageName="Profile" />

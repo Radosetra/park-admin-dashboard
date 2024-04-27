@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { Button } from '../button';
 import { FaPlus } from 'react-icons/fa';
 import { InputField } from '../input/components/input/input';
-import { EventType } from '../../types/event';
+import { TagDto } from '../../_type/event.dto';
 
 interface Option {
   value: string;
@@ -11,15 +11,17 @@ interface Option {
   element?: HTMLElement;
 }
 
-interface DropdownProps {
+interface MultiSelectProps {
   id: string;
   label: string;
-  tags: string[];
+  tags: TagDto[];
+  setTags: (tag: TagDto[])=> void
 }
 
-const MultiSelect: React.FC<DropdownProps> = ({ id, label, tags}) => {
+const MultiSelect: React.FC<MultiSelectProps> = ({ id, label, tags, setTags}) => {
   const [options, setOptions] = useState<Option[]>([]);
 
+  // index of selected element
   const [selected, setSelected] = useState<number[]>([]);
 
   const [show, setShow] = useState(false);
@@ -39,6 +41,7 @@ const MultiSelect: React.FC<DropdownProps> = ({ id, label, tags}) => {
           newOptions.push({
             value: select.options[i].value,
             text: select.options[i].innerText,
+            // check if the option is selected (true | false)
             selected: select.options[i].hasAttribute('selected'),
           });
         }
@@ -59,20 +62,26 @@ const MultiSelect: React.FC<DropdownProps> = ({ id, label, tags}) => {
 
   const select = (index: number, event: React.MouseEvent) => {
     const newOptions = [...options];
+    const newSelected = [...selected]; // Create copies to avoid mutation
 
+    // Handle addition/removal based on selected state
     if (!newOptions[index].selected) {
-      newOptions[index].selected = true;
-      newOptions[index].element = event.currentTarget as HTMLElement;
-      setSelected([...selected, index]);
+      newSelected.push(index); // Add index to selected if not already selected
     } else {
-      const selectedIndex = selected.indexOf(index);
+      const selectedIndex = newSelected.indexOf(index);
       if (selectedIndex !== -1) {
-        newOptions[index].selected = false;
-        setSelected(selected.filter((i) => i !== index));
+        newSelected.splice(selectedIndex, 1); // Remove index from selected if already selected
       }
     }
 
+    newOptions[index].selected = newSelected.includes(index); // Update selected state in options
+
     setOptions(newOptions);
+    setSelected(newSelected);
+
+    // Update tags state with selected values
+    const selectedTags = newSelected.map((i) => options[i].value); // Get tag IDs from selected indices
+    setTags(selectedTags); // Update parent component's tags state
   };
 
   const remove = (index: number) => {
@@ -110,8 +119,8 @@ const MultiSelect: React.FC<DropdownProps> = ({ id, label, tags}) => {
       <label className="mb-3 block text-lg dark:text-white">{label}</label>
       <div>
         <select className="hidden" id={id}>
-          {tags.map((tag, index) => (
-            <option value={index}>{tag}</option>
+          {tags?.map((tag, index) => (
+            <option value={tag.tag_id}>{tag.tag_name}</option>
           ))}
         </select>
 
@@ -153,6 +162,7 @@ const MultiSelect: React.FC<DropdownProps> = ({ id, label, tags}) => {
                             {options[index].text}
                           </div>
                           <div className="flex flex-auto flex-row-reverse">
+                            {/* delete btn */}
                             <div
                               onClick={() => remove(index)}
                               className="cursor-pointer pl-2 hover:text-danger"
@@ -187,6 +197,7 @@ const MultiSelect: React.FC<DropdownProps> = ({ id, label, tags}) => {
                         </div>
                       )}
                     </div>
+
                     <div className="flex w-8 items-center py-1 pl-1 pr-1">
                       <button
                         type="button"

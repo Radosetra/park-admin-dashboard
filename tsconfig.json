@@ -19,10 +19,10 @@
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true,
 
-    // "baseUrl": ".",
-    // "paths": {
-    //   "@/*": ["./*"]
-    // }
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["./*"]
+    }
   },
   "include": ["src", "src/lib.d.ts"],
   "references": [{ "path": "./tsconfig.node.json" }]
