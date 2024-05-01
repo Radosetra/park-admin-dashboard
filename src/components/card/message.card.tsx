@@ -6,8 +6,8 @@ import { formatDistanceToNow } from 'date-fns';
 
 interface MessageCardProps {
   message: ContactList;
-  setIsOpen: (param: boolean) => void
-  setCurrentMessage: (param: ContactList) => void
+  setIsOpen?: (param: boolean) => void
+  setCurrentMessage?: (param: ContactList) => void
 }
 
 const MessageCard = (props: MessageCardProps) => {
@@ -17,8 +17,8 @@ const MessageCard = (props: MessageCardProps) => {
     <div 
       className=""
       onClick={() => {
-        setCurrentMessage(message);
-        setIsOpen(true);
+        setCurrentMessage!(message);
+        setIsOpen!(true);
       }}
     >
       <Card
@@ -30,21 +30,21 @@ const MessageCard = (props: MessageCardProps) => {
           <div className="flex items-center justify-between">
             <div className="flex items-center justify-between gap-2">
               {/* Profil */}
-              <div className="flex items-center justify-center bg-primary text-white text-md font-medium w-[2.5rem] h-[2.5rem] rounded-full">
+              <div className="flex items-center justify-center bg-primary text-white text-md font-medium w-[2.5rem] h-[2.5rem] max-md:w-[2.2rem] max-md:h-[2.2rem] rounded-full">
                 {message.user_email[0].toUpperCase()}
               </div>
 
               {/* Name */}
-              <div className="flex items-center justify-center text-black  dark:text-white text-[1.5rem] opacity-4">
+              <div className="flex items-center justify-center text-black  dark:text-white text-[1.5rem] max-md:text-base max-md:font-semibold opacity-4">
                 {message.user_email}
               </div>
             </div>
 
-            <span className="text-black">{relativeDate}</span>
+            <span className="text-black max-md:text-sm">{relativeDate}</span>
           </div>
         </div>
 
-        <div className="text-customGray-400/80">
+        <div className="text-customGray-400/80 max-md:text-base">
           {truncateString(message.contact_content,200)}
         </div>
       </CardBody>

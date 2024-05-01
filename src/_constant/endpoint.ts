@@ -8,5 +8,6 @@ export enum ENDPOINT {
     LANDSCAPE = "landscape/",
     CONTACT = "contact/",
     COUNT="count/",
+    OVERVIEW = "list/",
     GALLERY = "picture/"
 }

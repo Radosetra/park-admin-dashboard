@@ -47,7 +47,7 @@ function App() {
           index
           element={
             <>
-              <PageTitle title="Dashboard" />
+              <PageTitle title="Tsingy Dashboard" />
               <Overview />
             </>
           }
