@@ -1,4 +1,5 @@
 export enum ENDPOINT {
+    AUTH = "auth/login/",
     EVENT = "event/",
     EVENTCREATE = "event/create/",
     EVENTUPDATE = "event/update/",
