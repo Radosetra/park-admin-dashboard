@@ -25,6 +25,7 @@ import Activity from './pages/Activity';
 import Landscape from './pages/Landscape';
 import Message from './pages/Message';
 import ReactQueryProvider from './provider/reactQuery.provider.tsx';
+import { Toaster } from '../@/components/ui/toaster.tsx';
 
 function App() {
   const [loading, setLoading] = useState<boolean>(true);
@@ -215,6 +216,7 @@ function App() {
           }
         />
       </Routes>
+      <Toaster/>
     </ReactQueryProvider>
   );
 }

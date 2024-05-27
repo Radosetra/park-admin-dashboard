@@ -6,6 +6,7 @@ import ModalBase from './ModalBase';
 import { ActivityDto } from '../../_type/activity.dto.ts';
 import { useDeleteActivity, useEditActivity } from '../../hooks/activity.hooks.ts';
 import { TextArea } from '../input/components/input/textarea.input.tsx';
+import { MessageAlertDialog } from '../Alert/MessageAlertDialog.tsx';
 
 interface ModelActivityViewProps {
   item: ActivityDto;
@@ -18,6 +19,15 @@ export default function ModalActivityView({ item, setIsOpen }: ModelActivityView
   const [description, setDescription] = useState<string>(item.activity_description)
   const {mutate:editActivity, isSuccess, isError} = useEditActivity(item.activity_id!)
   const {mutate, isSuccess:isDelSuccess, isError:isDelError} = useDeleteActivity(item.activity_id!)
+  const [openEditAlert, setOpenEditAlert] = useState<boolean>(false)
+  const [openDeleteAlert, setOpenDeleteAlert] = useState<boolean>(false)
+
+  const toggleOpenEditAlert = ()=>{
+    setOpenEditAlert(openEditAlert=>!openEditAlert)
+  }
+  const toggleOpenDeleteAlert = ()=>{
+    setOpenDeleteAlert(openDeleteAlert=>!openDeleteAlert)
+  }
   const handleFileChange = (e:ChangeEvent<HTMLInputElement>)=>{
     setFiles([...files,...Array.from(e.target.files!)])
   }
@@ -29,6 +39,7 @@ export default function ModalActivityView({ item, setIsOpen }: ModelActivityView
   }
   const handleDelete = async ()=>{
     mutate()
+    setIsOpen(false)
   }
   const handleSubmit = async ()=>{
     if (description !== ""){
@@ -40,6 +51,7 @@ export default function ModalActivityView({ item, setIsOpen }: ModelActivityView
       console.log(editedActivity)
       editActivity(editedActivity)
     }
+    setIsOpen(false)
   }
   useEffect(() => {
     if (isSuccess){
@@ -103,7 +115,7 @@ export default function ModalActivityView({ item, setIsOpen }: ModelActivityView
             type="button"
             onClick={() => {!isEditing?
               setIsEditing(true):
-              handleSubmit()
+              toggleOpenEditAlert()
             }}
           >
             {!isEditing ? 'Edit' : 'Save'}
@@ -112,10 +124,18 @@ export default function ModalActivityView({ item, setIsOpen }: ModelActivityView
           <button
             className="text-red-500 background-transparent font-bold uppercase px-6 py-2 text-sm outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
             type="button"
-            onClick={!isEditing?()=>handleDelete():()=>setIsOpen(false)}
+            onClick={!isEditing?()=>toggleOpenDeleteAlert():()=>setIsOpen(false)}
           >
             {!isEditing ? 'Remove' : 'Cancel'}
           </button>
+          {
+            openEditAlert &&
+            <MessageAlertDialog handleSubmit={()=>handleSubmit()} toggleOpen={toggleOpenEditAlert} description={"Are you sure you want to proceed this modification"} title={"Edit "+item.activity_name}/>
+          }
+          {
+            openDeleteAlert &&
+            <MessageAlertDialog handleSubmit={()=>handleDelete()} toggleOpen={toggleOpenDeleteAlert} description={"Are you sure you want to delete this activity"} title={"Delete activity"}/>
+          }
         </div>
       </div>
     </ModalBase>

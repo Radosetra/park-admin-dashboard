@@ -7,6 +7,7 @@ import { SpeciesDto } from '../../_type/species.dto.ts';
 import { InputField } from '../input/components/input/input.tsx';
 import { TextArea } from '../input/components/input/textarea.input.tsx';
 import { useEditSpecie } from '../../hooks/species.hooks.ts';
+import { MessageAlertDialog } from '../Alert/MessageAlertDialog.tsx';
 
 interface ModalSpecieViewProps {
   item: SpeciesDto;
@@ -17,8 +18,11 @@ export default function ModalSpecieView({ item, setIsOpen }: ModalSpecieViewProp
   const [isEditing, setIsEditing] = useState(false);
   const [files, setFiles ] = useState<File[]>([])
   const [type, setType] = useState<string>(item.specie_type)
+  const [openEditAlert, setOpenEditAlert] = useState<boolean>(false)
   const [description, setDescription] = useState<string>(item.specie_description)
   const {mutate:editSpecie, isSuccess, isError} = useEditSpecie(item.specie_id!)
+
+  const toggleOpenEditAlert = ()=> setOpenEditAlert(openEditAlert=>!openEditAlert)
   const handleFileChange = (e:ChangeEvent<HTMLInputElement>)=>{
     setFiles([...files,...Array.from(e.target.files!)])
   }
@@ -31,7 +35,7 @@ export default function ModalSpecieView({ item, setIsOpen }: ModalSpecieViewProp
   const handleDescriptionChange = (e:ChangeEvent<HTMLTextAreaElement>)=>{
     setDescription(e.target.value)
   }
-  const handleSubmit = ()=>{
+  const handleSubmit = async ()=>{
     const editedSpecie = new FormData()
     editedSpecie.append("specie_type", type)
     editedSpecie.append("specie_description", description)
@@ -39,6 +43,7 @@ export default function ModalSpecieView({ item, setIsOpen }: ModalSpecieViewProp
       editedSpecie.append("pictures", file)
     }
     editSpecie(editedSpecie)
+    setIsOpen(false)
   }
   useEffect(() => {
     if (isSuccess) console.log("Success")
@@ -115,7 +120,7 @@ export default function ModalSpecieView({ item, setIsOpen }: ModalSpecieViewProp
               () => {
               setIsEditing(true)
               }:
-              ()=>handleSubmit()
+              ()=>toggleOpenEditAlert()
             }
           >
             {!isEditing ? 'Edit' : 'Save'}
@@ -128,6 +133,10 @@ export default function ModalSpecieView({ item, setIsOpen }: ModalSpecieViewProp
           >
             {!isEditing ? 'Close' : 'Cancel'}
           </button>
+          {
+            openEditAlert &&
+            <MessageAlertDialog handleSubmit={()=>handleSubmit()} toggleOpen={toggleOpenEditAlert} description={"Are you sure you want to proceed the modification"} title={"Edit Specie"}/>
+          }
         </div>
       </div>
     </ModalBase>

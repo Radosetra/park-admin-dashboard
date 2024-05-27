@@ -61,7 +61,7 @@ export default function ModalFeedback({
                 setIsOpen(false)
               }}
             >
-              Approved
+              Approve
             </button>
 
             <button
@@ -72,7 +72,7 @@ export default function ModalFeedback({
                 setIsOpen(false)
               }}
             >
-              Declined
+              Decline
             </button>
           </div>
         )}

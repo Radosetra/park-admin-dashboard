@@ -5,6 +5,7 @@ import { ChangeEvent, useEffect, useState } from 'react';
 import { useUploadPhotos } from '../../hooks/gallery.hooks.ts';
 import { FaImage } from 'react-icons/fa';
 import { FileInput } from '../input';
+import { MessageAlertDialog } from '../Alert/MessageAlertDialog.tsx';
 
 interface ModalLandscapeViewProps {
   item: LandscapeDto;
@@ -14,19 +15,23 @@ interface ModalLandscapeViewProps {
 export default function ModalLandscapeView({ item, setIsOpen }: ModalLandscapeViewProps) {
   const [isEditing, setIsEditing] = useState(false);
   const [files, setFiles ] = useState<File[]>([])
+  const [openEditAlert, setOpenEditAlert] = useState<boolean>(false)
   const {mutate:uploadPhoto, isSuccess, isError} = useUploadPhotos("landscape", item.landscape_id!)
+
+  const toggleEditAlert = ()=> setOpenEditAlert(openEditAlert=>!openEditAlert)
   const handleFileChange = (e:ChangeEvent<HTMLInputElement>)=>{
     setFiles([...files,...Array.from(e.target.files!)])
   }
   const removeFile = (index:number)=>{
     setFiles(files.filter((_,i)=> i !== index))
   }
-  const handleSubmit = ()=>{
+  const handleSubmit = async ()=>{
     const pictures = new FormData()
     for (const file of files) {
       pictures.append("pictures", file)
     }
     uploadPhoto(pictures)
+    setIsOpen(false)
   }
   useEffect(() => {
     if (isError) console.log("Error")
@@ -79,7 +84,7 @@ export default function ModalLandscapeView({ item, setIsOpen }: ModalLandscapeVi
             () => {
               setIsEditing(true)
             } :
-            () => handleSubmit()
+            ()=>toggleEditAlert()
           }
         >
           {!isEditing ? 'Edit' : 'Save'}
@@ -92,6 +97,10 @@ export default function ModalLandscapeView({ item, setIsOpen }: ModalLandscapeVi
         >
           {!isEditing ? 'Close' : 'Cancel'}
         </button>
+        {
+          openEditAlert &&
+          <MessageAlertDialog handleSubmit={()=>handleSubmit()} toggleOpen={toggleEditAlert} description={"Are you sure you want to proceed the modification"} title={"Add pictures"}/>
+        }
       </div>
     </ModalBase>
   );

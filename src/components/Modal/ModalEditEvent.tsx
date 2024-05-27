@@ -7,6 +7,7 @@ import { DeleteEventDto, EditEventDto, TagDto } from '../../_type/event.dto';
 import { DatePickerWithRange } from '../Scheduler/DatePickerRange';
 import { dateRangeDto } from '@/src/_type/dateRange.dto';
 import { TagSelector } from '../Scheduler/TagSelector';
+import { MessageAlertDialog } from '../Alert/MessageAlertDialog.tsx';
 
 // import { convertToStr } from '../../utils/dateUtils';
 
@@ -23,7 +24,7 @@ const ModalCreateEvent = (props: ModalEventEventProps) => {
   const { eventId, setCurrentEvent, setIsOpen } = props
 
   const [event, setEvent] = useState<EditEventDto>();
-
+  const [openEditAlert, setOpenEditAlert] = useState<boolean>(false)
   const [eventName, setEventName] = useState<string>();
   const [dateRange, setDateRange] = useState<dateRangeDto>();
   const [eventDescription, setEventDescription] = useState<string>();
@@ -79,7 +80,8 @@ const ModalCreateEvent = (props: ModalEventEventProps) => {
     }
   }, [isSubSuscess, isSubError]);
 
-  const handleSubmit = () => {
+  const toggleEditAlert = ()=> setOpenEditAlert(op=>!op)
+  const handleSubmit = async () => {
 
     const tmpEvent: EditEventDto = {
       event_id: eventId,
@@ -93,6 +95,7 @@ const ModalCreateEvent = (props: ModalEventEventProps) => {
     console.log("Tmp Event ", tmpEvent);
     
     updateEvent(tmpEvent);
+    setIsOpen(false)
   };
 
   const handleDeleteOpen = ()=>{
@@ -153,10 +156,7 @@ const ModalCreateEvent = (props: ModalEventEventProps) => {
             <button
               className="bg-emerald-500 text-white active:bg-emerald-600 font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
               type="button"
-              onClick={() => {
-                handleSubmit();
-                setIsOpen(false);
-              }}
+              onClick={() => toggleEditAlert()}
             >
               Edit
             </button>
@@ -173,6 +173,10 @@ const ModalCreateEvent = (props: ModalEventEventProps) => {
             >
               Remove
             </button>
+            {
+              openEditAlert &&
+              <MessageAlertDialog handleSubmit={()=>handleSubmit()} toggleOpen={toggleEditAlert} description={"Are you sure you want to proceed the modification?"} title={"Edit event"}/>
+            }
           </div>
         </div>
       )}

@@ -39,7 +39,7 @@ export const TextArea = (props:TextAreaProps)=>{
                     </label>
                 )
             }
-            <textarea name={name} id="" cols={cols} rows={rows} onChange={onChanged} className={`in-input in-input-${size} border-[1.5px] border-stroke focus:ring-transparent w-full rounded-lg h-full px-5 py-3 outline-none focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary ${style}`} placeholder={placeholder} value={value} defaultValue={value}>
+            <textarea name={name} id="" cols={cols} rows={rows} onChange={onChanged} className={`in-input in-input-${size} border-[1.5px] border-stroke focus:ring-transparent w-full rounded-lg h-full px-5 py-3 outline-none focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary ${style}`} placeholder={placeholder} defaultValue={value}>
 
             </textarea>
         </div>
