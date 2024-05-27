@@ -4,8 +4,10 @@ import { InputField } from '../input/components/input/input';
 import ModalBase from './ModalBase';
 import { useCreateActivity } from '../../hooks/activity.hooks.ts';
 import { useCreateLandscape } from '../../hooks/landscape.hooks.ts';
-import { ChangeEvent, useState } from 'react';
+import { ChangeEvent, useEffect, useState } from 'react';
 import { useCreateSpecies } from '../../hooks/species.hooks.ts';
+import { MessageAlertDialog } from '../Alert/MessageAlertDialog.tsx';
+import { useToast } from '../../../@/components/ui/use-toast.ts';
 
 type ModalCreateItemProps = {
   item: 'specie' | 'activity' | 'landscape'
@@ -15,6 +17,7 @@ type ModalCreateItemProps = {
 
 const ModalCreateItem = (props: ModalCreateItemProps) => {
   const { item, setIsOpen } = props;
+  const {toast} = useToast()
   const {isSuccess:isSpecSuccess, isError:isSpecError, mutate:createSpecie} = useCreateSpecies();
   const {isSuccess:isLandSuccess, isError:isLandError, mutate:createLandscape} = useCreateLandscape()
   const {isSuccess:isActSuccess, isError:isActError, mutate:createActivity} = useCreateActivity()
@@ -22,7 +25,11 @@ const ModalCreateItem = (props: ModalCreateItemProps) => {
   const [ description, setDescription ] = useState<string>("")
   const [ type, setType ] = useState<string>("")
   const [files, setFiles ] = useState<File[]>([])
+  const [openCreateAlert, setOpenCreateAlert] = useState<boolean>(false)
 
+  const toggleCreateAlert = ()=>{
+    setOpenCreateAlert(openCreateAlert=>!openCreateAlert)
+  }
   const handleNameChange = (e:ChangeEvent<HTMLInputElement>)=>{
     setName(e.target.value)
   }
@@ -38,7 +45,7 @@ const ModalCreateItem = (props: ModalCreateItemProps) => {
   const removeFile = (index:number)=>{
     setFiles(files.filter((_,i)=> i !== index))
   }
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
       switch (item) {
         case 'activity':
           const activity = new FormData()
@@ -49,10 +56,17 @@ const ModalCreateItem = (props: ModalCreateItemProps) => {
           }
           createActivity(activity)
           if (isActSuccess){
-             console.log("Success")
+             toast(
+      {
+                  description:`${item} added successfully`
+                }
+              )
           }
           if (isActError){
-            console.log("Error")
+              toast({
+                description:`Failed to add new ${item}`,
+                variant: "destructive"
+              })
           }
           break
         case 'landscape':
@@ -65,10 +79,17 @@ const ModalCreateItem = (props: ModalCreateItemProps) => {
           }
           createLandscape(landscape)
           if (isLandSuccess){
-            console.log("Success")
+            toast(
+      {
+                  description:`${item} added successfully`
+                }
+              )
           }
           if (isLandError){
-            console.log("Error")
+              toast({
+                description:`Failed to add new ${item}`,
+                variant: "destructive"
+              })
           }
           break
         case 'specie':
@@ -81,17 +102,69 @@ const ModalCreateItem = (props: ModalCreateItemProps) => {
           }
           createSpecie(specie)
           if (isSpecSuccess){
-            console.log("Success")
+            toast(
+              {
+                description:`${item} added successfully`
+              }
+            )
           }
           if (isSpecError){
-            console.log("Error")
+              toast({
+                description:`Failed to add new ${item}`,
+                variant: "destructive"
+              })
           }
           break;
         default:
-          return ""
+          break;
     }
     setIsOpen(false)
   }
+  useEffect(() => {
+    if (isActSuccess){
+      toast(
+        {
+          description:`${item} added successfully`
+        }
+      )
+    }
+    if(isActError){
+      toast({
+        description:`Failed to add new ${item}`,
+        variant: "destructive"
+      })
+    }
+  }, [isActError, isActSuccess]);
+  useEffect(() => {
+    if (isLandSuccess){
+      toast(
+        {
+          description:`${item} added successfully`
+        }
+      )
+    }
+    if(isLandError){
+      toast({
+        description:`Failed to add new ${item}`,
+        variant: "destructive"
+      })
+    }
+  }, [isLandError, isLandSuccess]);
+  useEffect(() => {
+    if (isSpecSuccess){
+      toast(
+        {
+          description:`${item} added successfully`
+        }
+      )
+    }
+    if(isSpecError){
+      toast({
+        description:`Failed to add new ${item}`,
+        variant: "destructive"
+      })
+    }
+  }, [isSpecError, isSpecSuccess]);
 
   return (
     <ModalBase
@@ -149,7 +222,7 @@ const ModalCreateItem = (props: ModalCreateItemProps) => {
           <button
             className="bg-emerald-500 text-white active:bg-emerald-600 font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
             type="button"
-            onClick={() => handleSubmit()}
+            onClick={() => toggleCreateAlert()}
           >
             {/* {!isEditing ? 'Edit' : 'Save'} */}
             Save
@@ -162,6 +235,10 @@ const ModalCreateItem = (props: ModalCreateItemProps) => {
           >
             Cancel
           </button>
+          {
+            openCreateAlert &&
+            <MessageAlertDialog handleSubmit={()=>handleSubmit()} toggleOpen={toggleCreateAlert} description={"Are you sure you want to add this "+item} title={"Adding a new "+item}/>
+          }
         </div>
       </div>
     </ModalBase>

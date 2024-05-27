@@ -54,14 +54,14 @@ export default function ModalFeedback({
         {feedback.feedback_status === FeedbackStatus.PENDING && (
           <div className="flex items-center justify-end gap-5">
             <button
-              className="bg-emerald-500 bg-white text-emerald-600 border border-emerald-600 font-bold uppercase text-sm px-6 py-3 rounded-lg hover:bg-emerald-600 hover:text-white mr-1 mb-1 ease-linear transition-all duration-150"
+              className="bg-white text-emerald-600 border border-emerald-600 font-bold uppercase text-sm px-6 py-3 rounded-lg hover:bg-emerald-600 hover:text-white mr-1 mb-1 ease-linear transition-all duration-150"
               type="button"
               onClick={() => {
                 handleSubmit(FeedbackStatus.APPROVED)
                 setIsOpen(false)
               }}
             >
-              Approved
+              Approve
             </button>
 
             <button
@@ -72,7 +72,7 @@ export default function ModalFeedback({
                 setIsOpen(false)
               }}
             >
-              Declined
+              Decline
             </button>
           </div>
         )}

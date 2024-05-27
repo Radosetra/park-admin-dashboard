@@ -9,6 +9,7 @@ import { dateRangeDto } from '@/src/_type/dateRange.dto';
 import { TagSelector } from '../Scheduler/TagSelector';
 
 import { format } from "date-fns"
+import { MessageAlertDialog } from '../Alert/MessageAlertDialog.tsx';
 
 type ModalCreateEventProps = {
   setIsOpen: (param: boolean) => void;
@@ -18,15 +19,15 @@ const ModalCreateEvent = ({setIsOpen }: ModalCreateEventProps) => {
   // console.log("Select event : "+selectEvent);
 
   // const [event, setEvent] = useState<CreateEventDto>()
-
+  const [openCreateAlert, setOpenCreateAlert] = useState<boolean>(false)
   const [eventName, setEventName] = useState<string>();
   const [dateRange, setDateRange] = useState<dateRangeDto>()
   const [eventDescription, setEventDescription] = useState<string>()
   const [choisedTags, setChoisedTags] = useState<TagDto[]>()
 
   const {mutate: createEvent, isSuccess: isCreateSuccess, isError: isCreateError, data: createResp} = useCreateEvent()
-
-  const handleSubmit = () => {
+  const toggleCreateAlert = ()=> setOpenCreateAlert(o=>!o)
+  const handleSubmit = async () => {
     const tmpEvent: CreateEventDto = {
       event_name: eventName!,
       event_start_date: format(dateRange?.start_date!, "y-MM-dd"),
@@ -42,6 +43,7 @@ const ModalCreateEvent = ({setIsOpen }: ModalCreateEventProps) => {
     
 
     createEvent(tmpEvent!)
+    setIsOpen(false)
   }
 
   useEffect(()=>{
@@ -116,8 +118,7 @@ const ModalCreateEvent = ({setIsOpen }: ModalCreateEventProps) => {
             className="bg-emerald-500 text-white active:bg-emerald-600 font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
             type="button"
             onClick={() => {
-              handleSubmit();
-              setIsOpen(false);
+              toggleCreateAlert()
             }}
           >
             Save
@@ -130,6 +131,10 @@ const ModalCreateEvent = ({setIsOpen }: ModalCreateEventProps) => {
           >
             Cancel
           </button>
+          {
+            openCreateAlert &&
+            <MessageAlertDialog handleSubmit={()=>handleSubmit()} toggleOpen={toggleCreateAlert} description={"Are you sure you want to create this event"} title={"Create new event"}/>
+          }
         </div>
       </div>
       {/* } */}
