@@ -62,7 +62,11 @@ export const TagSelector = (props: TagSelectorProps) => {
       setSelectedTags(initialSelectedTags!);
 
       console.log('Selected Tag ', selectedTags);
-    } else if (state === 'edit' && isSuccess) {
+    } else if (state === 'edit' && tagsFromBackend !== undefined) {
+      console.log("Edit tag",tags);
+      console.log("From back",tagsFromBackend);
+      
+      
       // merge to array : array of tag of the event == true else false
       const initialSelectedTags = combineTags(tagsFromBackend!, tags!);
       setSelectedTags(initialSelectedTags!);

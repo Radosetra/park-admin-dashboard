@@ -6,6 +6,10 @@ export  class HttpClient {
         }
         let axiosInstance = axios.create(axiosConfig)
         axiosInstance.interceptors.request.use((config) => {
+            const token = localStorage.getItem("token");
+            if (token) {
+                config.headers.Authorization = `Bearer ${token}`;
+            }
             if (config.headers['Content-Type'] === 'multipart/form-data') {
                 config.headers['ContentType'] = 'multipart/form-data';
             }

@@ -1,4 +1,5 @@
 export enum ENDPOINT {
+    AUTH = "auth/login/",
     EVENT = "event/",
     EVENTCREATE = "event/create/",
     EVENTUPDATE = "event/update/",
@@ -14,5 +15,5 @@ export enum ENDPOINT {
     TAG = "tag/",
     TAGCREATE = "tag/create/",
     COUNT="count/",
-    OVERVIEW = "list/",
+    OVERVIEW = "list/"
 }

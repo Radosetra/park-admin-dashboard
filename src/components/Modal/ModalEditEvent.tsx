@@ -13,13 +13,13 @@ import { MessageAlertDialog } from '../Alert/MessageAlertDialog.tsx';
 
 // import moment from 'moment-timezone';
 
-type ModalEventEventProps = {
+type ModalEditEventProps = {
   eventId: string;
   setCurrentEvent: (param: DeleteEventDto) => void
   setIsOpen: (param: boolean) => void;
 };
 
-const ModalCreateEvent = (props: ModalEventEventProps) => {
+const ModalEditEvent = (props: ModalEditEventProps) => {
   // console.log("Select event : "+selectEvent);
   const { eventId, setCurrentEvent, setIsOpen } = props
 
@@ -66,7 +66,7 @@ const ModalCreateEvent = (props: ModalEventEventProps) => {
       });
       setEventDescription(tmpEvent?.event_description);
       setChoisedTags(tmpEvent?.tags);
-      console.log("Current tags ", choisedTags);
+      console.log("Current tags ", tmpEvent?.tags);
     }
   }, [data, isSuccess]);
 
@@ -136,7 +136,7 @@ const ModalCreateEvent = (props: ModalEventEventProps) => {
           <div className="h-[7.5rem]">
             <TextArea
               name="event_description"
-              onChanged={(e) => setEventDescription(e.target.value)}
+              onChanged={(e:any) => setEventDescription(e.target.value)}
               size="large"
               label="Description"
               value={eventDescription}
@@ -184,4 +184,4 @@ const ModalCreateEvent = (props: ModalEventEventProps) => {
   );
 };
 
-export default ModalCreateEvent;
+export default ModalEditEvent;
